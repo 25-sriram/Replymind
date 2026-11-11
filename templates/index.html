@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ReplyMind - Gmail Inbox</title>
+</head>
+<body>
+
+    <h1>ReplyMind Gmail Inbox</h1>
+
+    {% if not emails %}
+        <p>No emails found or Gmail is not connected.</p>
+    {% endif %}
+
+    {% for email in emails %}
+        <div style="border:1px solid #ccc; padding:15px; margin:15px;">
+            <h3>{{ email.subject }}</h3>
+            <p><b>From:</b> {{ email.sender }}</p>
+            <p>{{ email.body[:500] }}</p>
+
+            <form action="/analyze-gmail/{{ email.id }}" method="POST">
+                <button type="submit">Analyze with AI</button>
+            </form>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

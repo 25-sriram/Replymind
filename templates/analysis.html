@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReplyMind - Email Analysis</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            padding: 30px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px #00000010;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>ReplyMind AI Analysis</h1>
+
+    <div class="card">
+        <h2>Email Details</h2>
+        <p><strong>Subject:</strong> {{ email.subject }}</p>
+        <p><strong>From:</strong> {{ email.sender }}</p>
+        <p><strong>Priority:</strong> {{ result.get("priority", "Not specified") }}</p>
+        <p><strong>Category:</strong> {{ result.get("category", "Not specified") }}</p>
+        <p><strong>Intent:</strong> {{ result.get("intent", "Not specified") }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Email Summary</h2>
+        <p>{{ result.get("summary", "No summary available.") }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Key Points</h2>
+        {% for point in result.get("key_points", []) %}
+            <p>• {{ point }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h2>Suggested Reply</h2>
+
+        <p><strong>Tone:</strong> {{ tone }}</p>
+
+        <textarea readonly>{{ result.get("reply", "") }}</textarea>
+
+        <p>
+            <a class="button"
+               href="https://mail.google.com/mail/u/0/#drafts"
+               target="_blank">
+                Open Gmail Drafts
+            </a>
+        </p>
+
+        <p>Your AI-generated reply has been saved as a Gmail draft.
+           Review and edit it before sending.</p>
+    </div>
+
+    <a href="{{ url_for('gmail_inbox') }}">← Back to Inbox</a>
+
+</div>
+</body>
+</html>

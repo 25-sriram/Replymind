@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ReplyMind | Gmail Inbox</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #080c0a;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 35px 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            color: #f9fafb;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #39ff88;
+        }
+
+        .status {
+            background: #10271a;
+            color: #39ff88;
+            border: 1px solid #1d5937;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* INTRO */
+
+        .intro {
+            margin-bottom: 28px;
+        }
+
+        .intro h1 {
+            font-size: 27px;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .intro p {
+            color: #929b95;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #101914;
+            border: 1px solid #1e3829;
+            border-left: 4px solid #39ff88;
+            padding: 15px;
+            border-radius: 9px;
+            color: #b5c4ba;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* EMAIL CARD */
+
+        .email {
+            background: #111714;
+            border: 1px solid #25352b;
+            padding: 23px;
+            margin: 18px 0;
+            border-radius: 13px;
+            transition: 0.25s ease;
+        }
+
+        .email:hover {
+            border-color: #39ff88;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px #39ff8810;
+        }
+
+        .email h3 {
+            color: #ffffff;
+            font-size: 18px;
+            margin-bottom: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .sender {
+            color: #a1aaa4;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .sender strong {
+            color: #39ff88;
+        }
+
+        .email-body {
+            color: #b8c0ba;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            margin-bottom: 18px;
+        }
+
+        .email-divider {
+            border: none;
+            border-top: 1px solid #29372e;
+            margin: 18px 0;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: #d9e2dc;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: #080e0a;
+            color: #e5e7eb;
+            border: 1px solid #304238;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        select:focus,
+        textarea:focus {
+            border-color: #39ff88;
+            box-shadow: 0 0 0 3px #39ff8815;
+        }
+
+        select option {
+            background: #111714;
+            color: white;
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        textarea::placeholder {
+            color: #68746c;
+        }
+
+        /* BUTTON */
+
+        button {
+            background: #39ff88;
+            color: #07110a;
+            border: none;
+            padding: 13px 21px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 750;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            background: #20df70;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 18px #39ff8830;
+        }
+
+        /* EMPTY STATE */
+
+        .empty {
+            background: #111714;
+            border: 1px solid #25352b;
+            border-radius: 12px;
+            padding: 45px 20px;
+            text-align: center;
+        }
+
+        .empty h3 {
+            color: #39ff88;
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #929b95;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            color: #68746c;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 22px 14px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .intro h1 {
+                font-size: 23px;
+            }
+
+            .email {
+                padding: 17px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div class="logo">
+                Reply<span>Mind.</span>
+            </div>
+
+            <div class="status">
+                ● GMAIL CONNECTED
+            </div>
+
+        </div>
+
+
+        <!-- INTRO -->
+
+        <div class="intro">
+
+            <h1>Your Inbox</h1>
+
+            <p>
+                Manage your emails intelligently.
+                Let AI understand, analyze and generate your replies.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+            ✦ Select an email, choose your preferred reply tone,
+            and let ReplyMind generate an intelligent response.
+        </div>
+
+
+        <!-- EMAIL LIST -->
+
+        {% if not emails %}
+
+            <div class="empty">
+
+                <h3>No Emails Found</h3>
+
+                <p>
+                    Your Gmail inbox is currently empty.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        {% for email in emails %}
+
+            <div class="email">
+
+                <h3>{{ email.subject }}</h3>
+
+                <p class="sender">
+                    <strong>FROM</strong> &nbsp;
+                    {{ email.sender }}
+                </p>
+
+                <p class="email-body">
+                    {{ email.body[:500] }}
+                    {% if email.body|length > 500 %}
+                        ...
+                    {% endif %}
+                </p>
+
+                <hr class="email-divider">
+
+
+                <!-- AI ANALYSIS FORM -->
+
+                <form
+                    action="{{ url_for('analyze_gmail', email_id=email.id) }}"
+                    method="POST"
+                >
+
+                    <div class="form-group">
+
+                        <label for="tone-{{ loop.index }}">
+                            REPLY TONE
+                        </label>
+
+                        <select
+                            name="tone"
+                            id="tone-{{ loop.index }}"
+                        >
+
+                            <option value="Professional">
+                                Professional
+                            </option>
+
+                            <option value="Friendly">
+                                Friendly
+                            </option>
+
+                            <option value="Formal">
+                                Formal
+                            </option>
+
+                            <option value="Concise">
+                                Concise
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="context-{{ loop.index }}">
+                            ADDITIONAL CONTEXT (OPTIONAL)
+                        </label>
+
+                        <textarea
+                            name="context"
+                            id="context-{{ loop.index }}"
+                            placeholder="Tell AI how you want to respond..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <button type="submit">
+                        ✦ Analyze & Generate Reply
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+            ReplyMind · AI-Powered Email Intelligence
+        </div>
+
+    </div>
+
+</body>
+</html>
